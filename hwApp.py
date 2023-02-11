@@ -1,5 +1,6 @@
 import customtkinter
 from bs4 import BeautifulSoup
+import mysql.connector
 
 class TabView(customtkinter.CTkTabview):
     def __init__(self, master, **kwargs):
@@ -45,12 +46,23 @@ class TabView(customtkinter.CTkTabview):
             )
 
             c = connection.cursor()
-            c.execute('SELECT * FROM userdata')
-            print(c.fetchall())
-            print("logij")
+            search = "SELECT * FROM userdata WHERE username ='" + usernameEntry.get() + "' " + "AND password ='" + passwordEntry.get() + "'"
+            c.execute(search)
+            george = self.label1 = customtkinter.CTkLabel(master=self.tab("Profile"), text="")
+            george.grid(row=3, column=1, padx=20, pady=20)
 
+            if(c.fetchall()):
+                print("login success")
+                george.configure(text="Login Success!")
+            else:
+                print("login failed")
+                george.configure(text="Invalid Credentials")
+
+            
         button = customtkinter.CTkButton(master=self.tab("Profile"), text="Login", command=login_button)
         button.grid(row=2, column=1, pady=10)
+
+        
 
 
         # 'Settings' Widgets
