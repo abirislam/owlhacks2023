@@ -31,8 +31,26 @@ class TabView(customtkinter.CTkTabview):
         passwordLabel = customtkinter.StringVar(value="Password: ")
         self.label = customtkinter.CTkLabel(master=self.tab("Profile"), textvariable=passwordLabel)
         self.label.grid(row=1, column=0, padx=20, pady=10)
-        passwordEntry = customtkinter.CTkEntry(master=self.tab("Profile"), placeholder_text="Password here")
+        passwordEntry = customtkinter.CTkEntry(master=self.tab("Profile"), placeholder_text="Password here", show="*")
         passwordEntry.grid(row=1, column=1)
+
+        # 'Profile' Login
+        def login_button():
+            connection = mysql.connector.connect(
+                host='localhost',
+                user='root',
+                password='Abirthefool7',
+                port='3306',
+                database='owlhacks2023'
+            )
+
+            c = connection.cursor()
+            c.execute('SELECT * FROM userdata')
+            print(c.fetchall())
+            print("logij")
+
+        button = customtkinter.CTkButton(master=self.tab("Profile"), text="Login", command=login_button)
+        button.grid(row=2, column=1, pady=10)
 
 
         # 'Settings' Widgets
