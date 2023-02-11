@@ -32,7 +32,7 @@ class TabView(customtkinter.CTkTabview):
         self.label.grid(row=0, column=0, padx=20)
 
         # 'Settings' - Language Selector
-        language = customtkinter.StringVar(value="Language Selection")
+        language = customtkinter.StringVar(value="App Language")
         self.label = customtkinter.CTkLabel(master=self.tab("Settings"), textvariable=language)
         self.label.grid(row=1, column=0, padx=20)
 
@@ -45,16 +45,14 @@ class TabView(customtkinter.CTkTabview):
             variable=langugage_selector)
         language_box.grid(row=1, column=1)
 
-
+        # 'Settings' - Distance Selector
         maxDistance = customtkinter.StringVar(value="Max Distance")
         self.label = customtkinter.CTkLabel(master=self.tab("Settings"), textvariable=maxDistance)
         self.label.grid(row=2, column=0, padx=20, pady=10)
 
-        # Distance Drop-down
         combobox_var = customtkinter.StringVar(value="25 miles")
         def combobox_callback(choice):
             return choice
-
         combobox = customtkinter.CTkComboBox(master=self.tab("Settings"),
             values=["25 miles", "50 miles", "75 miles", "100 miles"],
             command=combobox_callback,
@@ -68,6 +66,34 @@ class TabView(customtkinter.CTkTabview):
         self.label.grid(row=0, column=3, padx=20)
 
         # Doctor Language Preference
+        doctorLanguageLabel = customtkinter.StringVar(value="Language")
+        self.label = customtkinter.CTkLabel(master=self.tab("Settings"), textvariable=doctorLanguageLabel)
+        self.label.grid(row=1, column=3, padx=20)
+
+
+        doctor_langugage_selector = customtkinter.StringVar(value="English")
+        def doctor_language_callback(choice):
+            return choice
+        doctor_language_box = customtkinter.CTkComboBox(master=self.tab("Settings"),
+        values=["English", "Spanish", "German", "French"],
+            command=doctor_language_callback,
+            variable=doctor_langugage_selector)
+        doctor_language_box.grid(row=1, column=4)
+
+        # Doctor Gender Preference
+        doctorGenderLabel = customtkinter.StringVar(value="Gender")
+        self.label = customtkinter.CTkLabel(master=self.tab("Settings"), textvariable=doctorGenderLabel)
+        self.label.grid(row=2, column=3, padx=20)
+
+        doctor_gender_selector = customtkinter.StringVar(value="Any")
+        def doctor_gender_callback(choice):
+            return choice
+        doctor_gender_box = customtkinter.CTkComboBox(master=self.tab("Settings"),
+        values=["Male", "Female", "Either", "Any"],
+            command=doctor_gender_callback,
+            variable=doctor_gender_selector)
+        doctor_gender_box.grid(row=2, column=4)
+
 
 class App(customtkinter.CTk):
     # Setup
