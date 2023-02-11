@@ -22,9 +22,18 @@ class TabView(customtkinter.CTkTabview):
         self.label.grid(row=0, column=0, padx=20, pady=10)
 
         # 'Profile' Widgets
-        s2 = customtkinter.StringVar(value="Profile display")
-        self.label = customtkinter.CTkLabel(master=self.tab("Profile"), textvariable=s2, width=650, height=370)
+        # 'Profile' Login Form
+        usernameLabel = customtkinter.StringVar(value="Username: ")
+        self.label = customtkinter.CTkLabel(master=self.tab("Profile"), textvariable=usernameLabel)
         self.label.grid(row=0, column=0, padx=20, pady=10)
+        usernameEntry = customtkinter.CTkEntry(master=self.tab("Profile"), placeholder_text="Username here")
+        usernameEntry.grid(row=0, column=1)
+        passwordLabel = customtkinter.StringVar(value="Password: ")
+        self.label = customtkinter.CTkLabel(master=self.tab("Profile"), textvariable=passwordLabel)
+        self.label.grid(row=1, column=0, padx=20, pady=10)
+        passwordEntry = customtkinter.CTkEntry(master=self.tab("Profile"), placeholder_text="Password here")
+        passwordEntry.grid(row=1, column=1)
+
 
         # 'Settings' Widgets
         categoryLabel = customtkinter.StringVar(value="Local Settings")
@@ -58,6 +67,19 @@ class TabView(customtkinter.CTkTabview):
             command=combobox_callback,
             variable=combobox_var)
         combobox.grid(row=2, column=1, pady=10)
+
+        # 'Settings' - Toll Switch
+        toll_title = customtkinter.StringVar(value="Toll-free")
+        self.label = customtkinter.CTkLabel(master=self.tab("Settings"), textvariable=toll_title)
+        self.label.grid(row=3, column=0, padx=20, pady=10)
+
+        tollSwitch = customtkinter.StringVar(value="on")
+        def tollSwitchEvent():
+            return tollSwitch.get()
+        tollSwitchOption = customtkinter.CTkSwitch(master=self.tab("Settings"), text="",
+            command=tollSwitchEvent, 
+            variable=tollSwitch, onvalue="on", offvalue="off")
+        tollSwitchOption.grid(row=3, column=1)
 
 
         # 'Settings' Doctor Options
