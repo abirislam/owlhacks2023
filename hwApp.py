@@ -1,6 +1,7 @@
 import customtkinter
 from mapbox import Geocoder
 from mapbox import Static
+from PIL import Image
 #from bs4 import BeautifulSoup
 #import mysql.connector
 
@@ -9,12 +10,24 @@ class TabView(customtkinter.CTkTabview):
         super().__init__(master, **kwargs)
 
         def button_event():
+            geocoder = Geocoder(access_token="pk.eyJ1IjoibmlhemJhaGFydWRlZW4iLCJhIjoiY2xlMGU2bjM3MWE2dTN1cHJkM3BscXp6aiJ9.K-YtZmHEZGjepLN68F9OZA")
+            service = Static(access_token="pk.eyJ1IjoibmlhemJhaGFydWRlZW4iLCJhIjoiY2xlMGU2bjM3MWE2dTN1cHJkM3BscXp6aiJ9.K-YtZmHEZGjepLN68F9OZA")
             address = self.address_entry.get()
             response = geocoder.forward(address)
-            print(response.url)
-            latlong = response.geojson()['features'][0]
-            lat = latlong['center'][0]
-            long = latlong['center'][1]
+            # print(response.url)
+            longlat = response.geojson()['features'][0]
+            long = longlat['center'][0]
+            lat = longlat['center'][1]
+
+            map_image = service.image('mapbox.satellite', lon=long, lat=lat, z=15)
+            map_image.headers['Content-Type']
+            with open('./map.png', 'wb') as output:
+                mapimage = output.write(map_image.content)
+
+            static_map=Image.open("map.png")
+            image = customtkinter.CTkImage(light_image=static_map, size=(20, 20))
+            #self.button = customtkinter.CTkButton(master=self.tab("Connector"), image=image)
+            #self.button.grid(row=0, column=2, padx=0, pady=0)
 
         # Tabs
         self.add("Connector")
@@ -23,7 +36,6 @@ class TabView(customtkinter.CTkTabview):
         self.add("Settings")
 
         # 'Connector' Widgets
-        geocoder = Geocoder(access_token="pk.eyJ1IjoibmlhemJhaGFydWRlZW4iLCJhIjoiY2xlMGU2bjM3MWE2dTN1cHJkM3BscXp6aiJ9.K-YtZmHEZGjepLN68F9OZA")
 
         address_bar = customtkinter.StringVar(value="Address:")
         self.label = customtkinter.CTkLabel(master=self.tab("Connector"), textvariable=address_bar)
