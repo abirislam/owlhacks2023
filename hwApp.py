@@ -1,7 +1,7 @@
 import customtkinter
 from mapbox import Geocoder
 #from bs4 import BeautifulSoup
-import mysql.connector
+#import mysql.connector
 
 class TabView(customtkinter.CTkTabview):
     def __init__(self, master, **kwargs):
