@@ -1,9 +1,8 @@
 import customtkinter
 from mapbox import Geocoder
 from mapbox import Static
-from PIL import Image
-#from bs4 import BeautifulSoup
-#import mysql.connector
+from PIL import Image, ImageTk
+import mysql.connector
 
 class TabView(customtkinter.CTkTabview):
     def __init__(self, master, **kwargs):
@@ -21,17 +20,22 @@ class TabView(customtkinter.CTkTabview):
 
             map_image = service.image('mapbox.satellite', lon=long, lat=lat, z=15)
             map_image.headers['Content-Type']
-            with open('./map.png', 'wb') as output:
+            with open('./owlhacks2023/map.png', 'wb') as output:
                 mapimage = output.write(map_image.content)
 
-            static_map=Image.open("map.png")
+            static_map=Image.open("./owlhacks2023/map.png")
             image = customtkinter.CTkImage(light_image=static_map, size=(20, 20))
             #self.button = customtkinter.CTkButton(master=self.tab("Connector"), image=image)
             #self.button.grid(row=0, column=2, padx=0, pady=0)
 
+            test = ImageTk.PhotoImage(static_map)
+            my_img = customtkinter.CTkImage(dark_image = static_map, size=(700,400))
+            button = customtkinter.CTkButton(master=self.tab("Connector"), image=my_img, text="")
+            button.grid(row=2, column=0)
+
+
         # Tabs
         self.add("Connector")
-        self.add("Messages")
         self.add("Profile")
         self.add("Settings")
 
@@ -45,12 +49,6 @@ class TabView(customtkinter.CTkTabview):
         self.address = customtkinter.StringVar(value="")
         self.button = customtkinter.CTkButton(master=self.tab("Connector"), width=25, height=25, border_width=0, corner_radius=8, text=">", command=button_event)
         self.button.grid(row=0, column=2, padx=0, pady=0)
-
-
-        # 'Messages' Widgets
-        messageDisplay = customtkinter.StringVar(value="Messages display")
-        self.label = customtkinter.CTkLabel(master=self.tab("Messages"), textvariable=messageDisplay, width=650, height=370)
-        self.label.grid(row=0, column=0, padx=20, pady=10)
 
         # 'Profile' Widgets
         # 'Profile' Login Form
