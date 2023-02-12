@@ -1,10 +1,33 @@
 import customtkinter
-from bs4 import BeautifulSoup
-import mysql.connector
+from mapbox import Geocoder
+from mapbox import Static
+from PIL import Image
+#from bs4 import BeautifulSoup
+#import mysql.connector
 
 class TabView(customtkinter.CTkTabview):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
+
+        def button_event():
+            geocoder = Geocoder(access_token="pk.eyJ1IjoibmlhemJhaGFydWRlZW4iLCJhIjoiY2xlMGU2bjM3MWE2dTN1cHJkM3BscXp6aiJ9.K-YtZmHEZGjepLN68F9OZA")
+            service = Static(access_token="pk.eyJ1IjoibmlhemJhaGFydWRlZW4iLCJhIjoiY2xlMGU2bjM3MWE2dTN1cHJkM3BscXp6aiJ9.K-YtZmHEZGjepLN68F9OZA")
+            address = self.address_entry.get()
+            response = geocoder.forward(address)
+            # print(response.url)
+            longlat = response.geojson()['features'][0]
+            long = longlat['center'][0]
+            lat = longlat['center'][1]
+
+            map_image = service.image('mapbox.satellite', lon=long, lat=lat, z=15)
+            map_image.headers['Content-Type']
+            with open('./map.png', 'wb') as output:
+                mapimage = output.write(map_image.content)
+
+            static_map=Image.open("map.png")
+            image = customtkinter.CTkImage(light_image=static_map, size=(20, 20))
+            #self.button = customtkinter.CTkButton(master=self.tab("Connector"), image=image)
+            #self.button.grid(row=0, column=2, padx=0, pady=0)
 
         # Tabs
         self.add("Connector")
@@ -13,9 +36,16 @@ class TabView(customtkinter.CTkTabview):
         self.add("Settings")
 
         # 'Connector' Widgets
-        s1 = customtkinter.StringVar(value="Connector homepage")
-        self.label = customtkinter.CTkLabel(master=self.tab("Connector"), textvariable=s1, width=650, height=370)
+
+        address_bar = customtkinter.StringVar(value="Address:")
+        self.label = customtkinter.CTkLabel(master=self.tab("Connector"), textvariable=address_bar)
         self.label.grid(row=0, column=0, padx=20, pady=10)
+        self.address_entry = customtkinter.CTkEntry(master=self.tab("Connector"), width=120, height=25, corner_radius=1)
+        self.address_entry.grid(row=0, column=1, padx=0, pady=0)
+        self.address = customtkinter.StringVar(value="")
+        self.button = customtkinter.CTkButton(master=self.tab("Connector"), width=25, height=25, border_width=0, corner_radius=8, text=">", command=button_event)
+        self.button.grid(row=0, column=2, padx=0, pady=0)
+
 
         # 'Messages' Widgets
         messageDisplay = customtkinter.StringVar(value="Messages display")
