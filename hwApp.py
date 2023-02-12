@@ -20,15 +20,11 @@ class TabView(customtkinter.CTkTabview):
 
             map_image = service.image('mapbox.satellite', lon=long, lat=lat, z=15)
             map_image.headers['Content-Type']
+
             with open('./owlhacks2023/map.png', 'wb') as output:
                 mapimage = output.write(map_image.content)
 
             static_map=Image.open("./owlhacks2023/map.png")
-            image = customtkinter.CTkImage(light_image=static_map, size=(20, 20))
-            #self.button = customtkinter.CTkButton(master=self.tab("Connector"), image=image)
-            #self.button.grid(row=0, column=2, padx=0, pady=0)
-
-            test = ImageTk.PhotoImage(static_map)
             my_img = customtkinter.CTkImage(dark_image = static_map, size=(700,400))
             button = customtkinter.CTkButton(master=self.tab("Connector"), image=my_img, text="")
             button.grid(row=2, column=0)
@@ -78,10 +74,13 @@ class TabView(customtkinter.CTkTabview):
             c.execute(search)
             george = self.label1 = customtkinter.CTkLabel(master=self.tab("Profile"), text="")
             george.grid(row=3, column=1, padx=20, pady=20)
+            personalInfo = self.label = customtkinter.CTkLabel(master=self.tab("Profile"), text="")
+            personalInfo.grid(row=4, column=1)
 
             if(c.fetchall()):
                 print("login success")
                 george.configure(text="Login Success!")
+                personalInfo.configure(text="Here are the clinical trials you are currently looking for:")
             else:
                 print("login failed")
                 george.configure(text="Invalid Credentials")
