@@ -21,11 +21,11 @@ class TabView(customtkinter.CTkTabview):
             map_image = service.image('mapbox.satellite', lon=long, lat=lat, z=15)
             map_image.headers['Content-Type']
 
-            with open('./owlhacks2023/map.png', 'wb') as output:
+            with open('./map.png', 'wb') as output:
                 mapimage = output.write(map_image.content)
 
-            static_map=Image.open("./owlhacks2023/map.png")
-            my_img = customtkinter.CTkImage(dark_image = static_map, size=(700,400))
+            static_map = Image.open("./map.png")
+            my_img = customtkinter.CTkImage(dark_image = static_map, size=(700,400))    
             button = customtkinter.CTkButton(master=self.tab("Connector"), image=my_img, text="")
             button.grid(row=2, column=0)
 
@@ -64,7 +64,7 @@ class TabView(customtkinter.CTkTabview):
             connection = mysql.connector.connect(
                 host='localhost',
                 user='root',
-                password='Abirthefool7',
+                password='T_T',
                 port='3306',
                 database='owlhacks2023'
             )
