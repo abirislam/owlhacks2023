@@ -1,5 +1,6 @@
 import customtkinter
 from mapbox import Geocoder
+from mapbox import Static
 #from bs4 import BeautifulSoup
 #import mysql.connector
 
@@ -8,8 +9,12 @@ class TabView(customtkinter.CTkTabview):
         super().__init__(master, **kwargs)
 
         def button_event():
-            print(self.address_entry.get())
-            self.button.configure(state="disabled")
+            address = self.address_entry.get()
+            response = geocoder.forward(address)
+            print(response.url)
+            latlong = response.geojson()['features'][0]
+            lat = latlong['center'][0]
+            long = latlong['center'][1]
 
         # Tabs
         self.add("Connector")
@@ -18,6 +23,8 @@ class TabView(customtkinter.CTkTabview):
         self.add("Settings")
 
         # 'Connector' Widgets
+        geocoder = Geocoder(access_token="pk.eyJ1IjoibmlhemJhaGFydWRlZW4iLCJhIjoiY2xlMGU2bjM3MWE2dTN1cHJkM3BscXp6aiJ9.K-YtZmHEZGjepLN68F9OZA")
+
         address_bar = customtkinter.StringVar(value="Address:")
         self.label = customtkinter.CTkLabel(master=self.tab("Connector"), textvariable=address_bar)
         self.label.grid(row=0, column=0, padx=20, pady=10)
@@ -27,7 +34,6 @@ class TabView(customtkinter.CTkTabview):
         self.button = customtkinter.CTkButton(master=self.tab("Connector"), width=25, height=25, border_width=0, corner_radius=8, text=">", command=button_event)
         self.button.grid(row=0, column=2, padx=0, pady=0)
 
-        geocoder = Geocoder(access_token="pk.eyJ1IjoibmlhemJhaGFydWRlZW4iLCJhIjoiY2xlMGU2bjM3MWE2dTN1cHJkM3BscXp6aiJ9.K-YtZmHEZGjepLN68F9OZA")
 
         # 'Messages' Widgets
         messageDisplay = customtkinter.StringVar(value="Messages display")
